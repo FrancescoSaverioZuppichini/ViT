@@ -71,7 +71,16 @@ fig = plt.figure()
 plt.imshow(img)
 ```
 
-![alt](https://github.com/FrancescoSaverioZuppichini/ViT/blob/main/images/output_5_1.png?raw=true)
+
+
+
+    <matplotlib.image.AxesImage at 0x7fa82e73ebe0>
+
+
+
+
+![png](output_5_1.png)
+
 
 Then, we need to preprocess it
 
