@@ -15,7 +15,7 @@ So, before beginning, I highly recommend you to:
 - have a look at the amazing [The Illustrated Transformer
 ](https://jalammar.github.io/illustrated-transformer/) website
 - watch [Yannic Kilcher video about ViT](https://www.youtube.com/watch?v=TrdevFK_am4&t=1000s)
-- read the [Einops](https://einops.rocks/) doc
+- read [Einops](https://github.com/arogozhnikov/einops/) doc
 
 So, ViT uses a normal transformer (the one proposed in [Attention is All You Need](https://arxiv.org/abs/1706.03762)) that works on images. But, how?
 
@@ -178,7 +178,7 @@ PatchEmbedding()(x).shape
 
 
 
-`cls_token` is a torch Parameter randomly initialized, in the `forward` method it is compied `b` (batch) times and preprended before the projected patches using `torch.cat`
+`cls_token` is a torch Parameter randomly initialized, in the forward the method it is copied `b` (batch) times and prepended before the projected patches using `torch.cat`
 
 ### Position Embedding
 
@@ -233,7 +233,7 @@ Let's start with the Attention part
 
 ### Attention
 
-So, the attention takes three inputs, the famous **queries, keys and values** and compute the attention matrix using queries and values and use it to "attend" to the values. In this case, we are using **multi head** attention meaning that the computation is split across `n` heads with smaller input size.
+So, the attention takes three inputs, the famous queries, keys, and values, and computes the attention matrix using queries and values and use it to "attend" to the values. In this case, we are using multi-head attention meaning that the computation is split across n heads with smaller input size.
 
 ![alt](https://github.com/FrancescoSaverioZuppichini/ViT/blob/main/images/TransformerBlockAttention.png?raw=true)
 
@@ -310,7 +310,7 @@ and we obtain a vector of size `BATCH HEADS VALUES_LEN, EMBEDDING_SIZE`. We conc
 
 ### Residuals
 
-The transformer block has residual connection
+The transformer block has residuals connection
 
 ![alt](https://github.com/FrancescoSaverioZuppichini/ViT/blob/main/images/TransformerBlockAttentionRes.png?raw=true)
 
@@ -332,7 +332,7 @@ class ResidualAdd(nn.Module):
 
 ## MLP
 
-The attention's output is passed to a fully connected layer composed by two layers that upsample by a factor of `expansion` the input
+The attention's output is passed to a fully connected layer composed of two layers that upsample by a factor of `expansion` the input
 
 <img src="https://github.com/FrancescoSaverioZuppichini/ViT/blob/main/images/TransformerBlockAttentionZoom.png?raw=true" alt="drawing" width="200"/>
 
@@ -349,9 +349,9 @@ class FeedForwardBlock(nn.Sequential):
         )
 ```
 
-Just a quick side note. I don't know why but I've never seend people subclassing `nn.Sequential` to avoid writing the `forward` method. Start doing it, this is how object programming works!
+Just a quick side note. I don't know why but I've never seen people subclassing `nn.Sequential` to avoid writing the `forward` method. Start doing it, this is how object programming works!
 
-**Finally** we can create the Transformer Encoder Block
+**Finally**, we can create the Transformer Encoder Block
 <img src="https://github.com/FrancescoSaverioZuppichini/ViT/blob/main/images/TransformerBlock.png?raw=true" alt="drawing" width="200"/>
 
 
@@ -474,11 +474,11 @@ Estimated Total Size (MB): 694.56
 ---------------------------------------------------------------
 ```
 
-I checked the number of parameters with others implementation and they are the same!
+I checked the parameters with other implementations and they are the same!
 
 # Conclusions
 
-In this article, we have seen how to implement ViT in a nice, scalable and customizable way. I hope it was useful.
+In this article, we have seen how to implement ViT in a nice, scalable, and customizable way. I hope it was useful.
 
 By the way, I am working on a **new computer vision library called [glasses](https://github.com/FrancescoSaverioZuppichini/glasses), check it out if you like**
 
