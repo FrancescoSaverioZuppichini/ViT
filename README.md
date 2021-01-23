@@ -1,6 +1,6 @@
-# Implementing Vi(sion)T(transformer) in PyTorch
+# Implementing Vi(sual)T(transformer) in PyTorch
 
-Hi guys, happy new year! Today we are going to implement the famous **Vi**(sion)**T**(transformer) proposed in [AN IMAGE IS WORTH 16X16 WORDS:
+Hi guys, happy new year! Today we are going to implement the famous **Vi**(sual)**T**(transformer) proposed in [AN IMAGE IS WORTH 16X16 WORDS:
 TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE](https://arxiv.org/pdf/2010.11929.pdf).
 
 
@@ -279,7 +279,8 @@ class MultiHeadAttention(nn.Module):
         self.values = nn.Linear(emb_size, emb_size)
         self.att_drop = nn.Dropout(dropout)
         self.projection = nn.Linear(emb_size, emb_size)
-        
+        self.scaling = (self.emb_size // num_heads) ** -0.5
+
     def forward(self, x : Tensor, mask: Tensor = None) -> Tensor:
         # split keys, queries and values in num_heads
         queries = rearrange(self.queries(x), "b n (h d) -> b h n d", h=self.num_heads)
@@ -291,8 +292,7 @@ class MultiHeadAttention(nn.Module):
             fill_value = torch.finfo(torch.float32).min
             energy.mask_fill(~mask, fill_value)
             
-        scaling = self.emb_size ** (1/2)
-        att = F.softmax(energy, dim=-1) / scaling
+        att = F.softmax(energy, dim=-1) * self.scaling
         att = self.att_drop(att)
         # sum up over the third axis
         out = torch.einsum('bhal, bhlv -> bhav ', att, values)
